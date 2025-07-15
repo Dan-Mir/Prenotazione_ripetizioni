@@ -153,6 +153,7 @@ def book_lesson():
     service = get_google_service()
 
     try:
+        print("LESSONS_CALENDAR_ID:", LESSONS_CALENDAR_ID)
         # Crea l'evento nel calendario dedicato alle lezioni
         created_event = service.events().insert(
             calendarId=LESSONS_CALENDAR_ID,
