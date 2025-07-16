@@ -18,8 +18,11 @@ const Index = () => {
   const [availableTimes, setAvailableTimes] = useState<string[]>([]);
   const [selectedTime, setSelectedTime] = useState<string>("");
   const [showForm, setShowForm] = useState(false);
+  const [isLoadingSlots, setIsLoadingSlots] = useState(false);
+
 
   async function fetchAvailableSlots(date: Date) {
+      setIsLoadingSlots(true);
     try {
       const response = await fetch(
         `http://localhost:5000/available-slots?date=${date.toISOString().split("T")[0]}`
@@ -30,6 +33,8 @@ const Index = () => {
       setAvailableTimes(data.available_slots);
     } catch (error) {
       console.error("Errore durante il recupero degli slot:", error);
+    } finally {
+    setIsLoadingSlots(false);
     }
   }
 
@@ -66,18 +71,26 @@ const Index = () => {
         onChange={handleDateChange}
       />
 
-      {availableTimes.length > 0 && !showForm && (
-        <>
-          <h2 className="text-lg font-semibold mb-2">Orari disponibili:</h2>
-          <div className="grid grid-cols-3 gap-2 mb-6">
-            {availableTimes.map((time) => (
-              <Button key={time} onClick={() => handleSlotClick(time)}>
-                {time}
-              </Button>
-            ))}
+        {isLoadingSlots ? (
+          <div className="flex flex-col items-center gap-2 my-6">
+            <span className="loader loader-lg border-blue-500"></span>
+            <p className="text-gray-600 text-sm">Caricamento orari disponibili...</p>
           </div>
-        </>
-      )}
+        ) : (
+          availableTimes.length > 0 && !showForm && (
+            <>
+              <h2 className="text-lg font-semibold mb-2">Orari disponibili:</h2>
+              <div className="grid grid-cols-3 gap-2 mb-6">
+                {availableTimes.map((time) => (
+                  <Button key={time} onClick={() => handleSlotClick(time)}>
+                    {time}
+                  </Button>
+                ))}
+              </div>
+            </>
+          )
+        )}
+
 
       {showForm && date && selectedTime && (
         <BookingForm
