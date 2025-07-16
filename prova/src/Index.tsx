@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { BookingForm } from "./BookingForm";
+import Lottie from "lottie-react";
+import loadingAnimation from "./loading-icon.json";
+
 
 
 // Componente Button semplice dato che non hai shadcn/ui configurato
@@ -73,8 +76,12 @@ const Index = () => {
 
         {isLoadingSlots ? (
           <div className="flex flex-col items-center gap-2 my-6">
-            <span className="loader loader-lg border-blue-500"></span>
-            <p className="text-gray-600 text-sm">Caricamento orari disponibili...</p>
+            <Lottie
+              animationData={loadingAnimation}
+              loop
+              style={{ width: 100, height: 100 }}
+            />
+            <p className="text-black-600 text-sm">Caricamento orari disponibili...</p>
           </div>
         ) : (
           availableTimes.length > 0 && !showForm && (
