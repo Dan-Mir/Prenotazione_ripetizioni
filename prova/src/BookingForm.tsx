@@ -11,9 +11,12 @@ export function BookingForm({ selectedDate, selectedTime, onSubmit }: BookingFor
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [duration, setDuration] = useState(60);
+  const [isLoading, setIsLoading] = useState(false);
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
 
     const payload = {
       name,
@@ -43,6 +46,8 @@ export function BookingForm({ selectedDate, selectedTime, onSubmit }: BookingFor
       }
     } catch (error) {
       alert("Errore di rete");
+    } finally {
+    setIsLoading(false);
     }
   };
 
@@ -102,9 +107,14 @@ export function BookingForm({ selectedDate, selectedTime, onSubmit }: BookingFor
 
         <button
           type="submit"
-          className="w-full bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded transition-colors"
+          className="w-full bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded transition-colors flex items-center justify-center"
+          disabled={isLoading}
         >
-          Prenota
+          {isLoading ? (
+            <span className="loader border-white"></span>
+          ) : (
+            "Prenota"
+          )}
         </button>
       </form>
     </div>

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { BookingForm } from "./BookingForm";
 
+
 // Componente Button semplice dato che non hai shadcn/ui configurato
 const Button = ({ onClick, children, ...props }: React.ButtonHTMLAttributes<HTMLButtonElement>) => (
   <button
@@ -85,6 +86,7 @@ const Index = () => {
           onSubmit={handleFormSubmit}
         />
       )}
+
     </div>
   );
 };
